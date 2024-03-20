@@ -17,7 +17,7 @@ page_html = page_contents_bytes.decode("utf-8")
 soup = BeautifulSoup(page_html, "html.parser")
 
 pokemon_rows = soup.find_all("table", id="pokedex")[0].find_all('tbody')[0].find_all("tr")
-for pokemon in pokemon_rows[6:7]:
+for pokemon in pokemon_rows[0:3]:
     pokemon_data = pokemon.find_all("td")
 ##POKEID
     id = pokemon_data[0]['data-sort-value']
@@ -51,7 +51,32 @@ for pokemon in pokemon_rows[6:7]:
 
         height = str(pokemon_entryinf[3].find_all('td')[0].getText())
         weight = str(pokemon_entryinf[4].find_all('td')[0].getText())
-    print(height+"\n" +weight + "\n")
+    print(height+"\n" +weight)
+
+    ## Location first found
+    Location = "Unknown"
+    count = 0
+    found = 0
+    while count != 5 :
+        while found != 5:
+            try:
+                pokemon_loc = entry_soup.find_all("main")[0].find_all("div",{"class": "grid-col span-md-12 span-lg-8"})[count].find_all("div",{"class":"resp-scroll"})[found].find_all("table",{"class":"vitals-table"})[found].find_all("td")[0].find_all("a")[0]
+                Location = pokemon_loc.getText()
+
+                pokemon_loc = entry_soup.find_all("main")[0].find_all("div",{"class": "grid-col span-md-12 span-lg-8"})[count].find_all("div",{"class":"resp-scroll"})[found].find_all("td")[0].find_all("small")[0]
+                hstr = str(pokemon_loc.getText())
+                if hstr.find("Evolve") != -1:
+                    Location = "Unkown"
+                    break
+                elif hstr.find("Breed") != -1:
+                    Location = "Unknown"
+                    break        
+            except IndexError:
+                break
+            found = found+1
+        count = count+1
+
+    print(Location)
         
 ##Get dex info
     dex_entries = []
@@ -82,6 +107,8 @@ for pokemon in pokemon_rows[6:7]:
     
     for x in range(len(dex_entries)):
         print(dex_entries[x])
+
+    print("\n\n")
     
 
    
