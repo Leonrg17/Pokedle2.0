@@ -1,0 +1,16 @@
+This is for linux ubuntu 22.04.4 and mint 21.3
+
+To start mongo server run:
+	mongod --logpath /var/log/mongodb/mongod.log --fork
+		## --logpath is for where the server log is stored
+		## --fork is for it to run as daemon
+
+To stop mongo server run:
+	first check if its running with:
+		ps -ef|grep mongod|grep -v grep
+	if is running then to stop it use:
+		killall mongod
+
+To access shell enviornment run:
+	mongosh
+
